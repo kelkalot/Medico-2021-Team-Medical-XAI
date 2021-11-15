@@ -11,4 +11,6 @@ Link to model files: https://drive.google.com/drive/folders/1VkWg195KtIh7bEmU4OM
 
 Example image of the extracted GradCam for the image level classification and the resulting unsupervised segmentation masks.
 
+Original image -> Ground Truth mask -> Image level classification GradCam -> Unsupervised segmentation mask
+
 ![image](https://user-images.githubusercontent.com/16191000/141788111-d67588bf-6b55-4fb4-95c2-218b770dcd1a.png)
