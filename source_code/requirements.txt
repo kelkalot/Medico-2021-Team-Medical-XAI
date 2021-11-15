@@ -1,0 +1,16 @@
+#First installing tf with backup-wheel
+pandas 
+numpy
+matplotlib
+torch
+torchvision
+jupyter
+scikit-learn == 0.24.2
+pyclustering
+efficientnet-pytorch
+grad-cam
+typing-extensions==3.7.4.3
+ttach
+tqdm
+liac-arff
+opencv-python
