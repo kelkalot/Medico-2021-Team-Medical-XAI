@@ -30,9 +30,9 @@ torch.manual_seed(0)
 
 #Test combination of EdgeHistogram, Tamura, LuminanceLayout and SimpleColorHistogram
 #Location of csv-files with extracted features:
-polyps_file = '../global-features/features_50ClustersModel/polyp_tiles_globalfeatures.csv'
-nonpolyps_file = '../global-features/features_50ClustersModel/nonpolyp_tiles_globalfeatures.csv'
-unlabeled_file = '../global-features/features_50ClustersModel/unlabeled_tiles_globalfeatures.csv'
+polyps_file = '../global-features/features_200&250ClustersModels/polyp_globalfeatures.csv'
+nonpolyps_file = '../global-features/features_200&250ClustersModels/nonpolyp_globalfeatures.csv'
+unlabeled_file = '../global-features/features_200&250ClustersModels/unlabeled_globalfeatures.csv'
 
 
 ### Preprocessing to create the large df:
@@ -175,13 +175,13 @@ def run_clusterloop(large_df, num_clusters = 5):
     return large_df
 
 
-run_clusterloop(large_df, num_clusters=50)
+run_clusterloop(large_df, num_clusters=250) #Here you can adjust the number of clusters. Must also change to same cluster-number inside the while-loop below
 
 #Run clusterloop until at least 1000 labeled images in df: 
 while large_df.iloc[np.where(large_df['Label']!='unlabeled')[0].tolist(), :].shape[0] < 1000:
     #Remove pred_clusters and dist_clustercenter from large_df before new round of clustering:
     large_df.drop(['pred_cluster', 'dist_clustercenter'], axis = 1, inplace = True)
-    run_clusterloop(large_df, num_clusters=50)
+    run_clusterloop(large_df, num_clusters=250)
 
 #When 1000 labeled images or more, select 1000 of the labeled images:
 labeled_df = large_df.iloc[np.where(large_df['Label']!= 'unlabeled')[0].tolist(),:].iloc[:1000,:]
@@ -190,12 +190,12 @@ print('Number of nonpolyp observations:', len(labeled_df.iloc[np.where(labeled_d
 
 
 #Copy labeled images to cnn_training_images folder
-polyp_target_dir = 'tiles_1000_cnn_training_50clusters/polyp'
-nonpolyp_target_dir = 'tiles_1000_cnn_training_50clusters/non_polyp'
+polyp_target_dir = 'tiles_1000_cnn_training_50clusters/polyp' #Replace this with a repo of your choice = folder to train CNN
+nonpolyp_target_dir = 'tiles_1000_cnn_training_50clusters/non_polyp' #Replace this with a repo of your choice
 
-source_path = 'training_tiles/unlabeled'
+source_path = 'training_images/unlabeled' #This is where the unlabeled images are placed
 print('Shape',labeled_df.iloc[200:,:].shape[0])
-#Since 200 first images are already labeled and in another source directory...
+#Do not move the 200 first images since they are already labeled and in training_images/labeled/polyp (or non_polyp)...
 for _i in range(labeled_df.iloc[200:,:].shape[0]):
     image_file = labeled_df.iloc[200 + _i, -3]
     this_source_path = os.path.join(source_path, image_file)
